@@ -39,6 +39,7 @@ vac=# SELECT pg_size_pretty(pg_total_relation_size('products'));
 
 ## 3. 5 раз обновить все строчки и добавить к каждой строчке любой символ
 Повторяем 5 раз
+
 ```
 vac=# UPDATE products SET name = CONCAT(name,'s');
 UPDATE 1000000
@@ -193,9 +194,10 @@ vac=# SELECT n_dead_tup, last_autovacuum FROM pg_stat_user_tables WHERE relname 
 ------------+-------------------------------
           0 | 2024-10-14 20:39:11.032505+03
 (1 row)
-
+```
 
 После автовакуума таблица не почистилась
+
 ```
 vac=#  SELECT pg_size_pretty(pg_total_relation_size('products'));
  pg_size_pretty
