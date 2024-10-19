@@ -42,24 +42,6 @@ locks=# INSERT INTO accounts (id, amount) VALUES (3, 30.00);
 INSERT 0 1
 ```
 
-откроем 2 сессии
-
-1 сессия - начнем транзакцию и попытаемся обновить amount с id = 1
-```
-locks=# begin;
-BEGIN
-locks=*# UPDATE accounts SET amount = amount + 1 WHERE id = 1;
-UPDATE 1
-```
-
-2 сессия - начнем транзакцию и попытаемся обновить amount с id = 2
-```
-locks=# begin;
-BEGIN
-locks=*# UPDATE accounts SET amount = amount + 1 WHERE id = 2;
-UPDATE 1
-```
-
 Проверим pid у 2 сессий:
 
 1 сессия
@@ -80,6 +62,23 @@ locks=# select * from pg_backend_pid();
 (1 row)
 ```
 
+откроем 2 сессии
+
+1 сессия - начнем транзакцию и попытаемся обновить amount с id = 1
+```
+locks=# begin;
+BEGIN
+locks=*# UPDATE accounts SET amount = amount + 1 WHERE id = 1;
+UPDATE 1
+```
+
+2 сессия - начнем транзакцию и попытаемся обновить amount с id = 2
+```
+locks=# begin;
+BEGIN
+locks=*# UPDATE accounts SET amount = amount + 1 WHERE id = 2;
+UPDATE 1
+```
 
 Затем переходим снова в 1 сессию и пытаемся обновить amount с id = 2, как и во второй транзакции, видимо, что зависло
 ```
@@ -87,7 +86,7 @@ locks=*# UPDATE accounts SET amount = amount + 1 WHERE id = 2;
 |
 ```
 
-Посмотрим в логах, там никакой информации, включим логирование всех блокировок:
+Посмотрим в логах информацию о блокировках - там никакой информации, включим логирование всех блокировок:
 ```
 postgres=# ALTER SYSTEM SET log_lock_waits = 'on';
 ALTER SYSTEM SET deadlock_timeout = '1s';
@@ -112,7 +111,7 @@ SHOW deadlock_timeout;
 (1 row)
 ```
 
-После включения логгирования:
+После включения логирования:
 ```
 2024-10-19 15:06:29.542 MSK [231582] postgres@locks LOG:  process 231582 still waiting for ShareLock on transaction 1196 after 1000.060 ms
 2024-10-19 15:06:29.542 MSK [231582] postgres@locks DETAIL:  Process holding the lock: 231583. Wait queue: 231582.
