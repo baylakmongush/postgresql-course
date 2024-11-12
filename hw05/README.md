@@ -17,9 +17,7 @@
 ```
 ● postgresql.service - PostgreSQL RDBMS
      Loaded: loaded (/lib/systemd/system/postgresql.service; enabled; preset: enabled)
-     Active: active (exited) since Wed 2024-10-02 21:22:12 MSK; 6s ago
-   Main PID: 28162 (code=exited, status=0/SUCCESS)
-        CPU: 1ms
+     Active: active (exited)
 ```
 
 ### 4) sudo su - postgres
