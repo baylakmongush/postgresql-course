@@ -51,9 +51,9 @@ postgres=# SELECT id,
        date,
        amount,
        product,
-       get_third(date) AS year_third
+       get_third(date) AS third_of_year
 FROM sales;
- id | date | amount |     product     | year_third
+ id | date | amount |     product     | third_of_year
 ----+------+--------+-----------------+------------
   1 |      | 100.00 | Example Product |
 (1 row)
